@@ -1,5 +1,6 @@
 package com.bitdev.birthdaycard
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -12,15 +13,20 @@ import android.widget.TextView
 
 class EndActivity : AppCompatActivity() {
     private lateinit var zodiac_text: TextView
+    private lateinit var age_text: TextView
     private lateinit var zodiac_text2: TextView
+    private lateinit var birthStoneText : TextView
     private lateinit var name: TextView
     private lateinit var topanim: Animation
     private lateinit var bottomanim: Animation
     private lateinit var leftanim: Animation
     private lateinit var back: Button
     var zodiac: String? = null
+    var age: String? = null
+    var birthstone : String? = null
     private lateinit var zodiac_sign: ImageView
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setFlags(
@@ -31,9 +37,19 @@ class EndActivity : AppCompatActivity() {
         topanim = AnimationUtils.loadAnimation(this, R.anim.top_animation)
         leftanim = AnimationUtils.loadAnimation(this, R.anim.left_to_right)
         bottomanim = AnimationUtils.loadAnimation(this, R.anim.bottom_animation)
+
         val intent = intent
         name = findViewById(R.id.text_name)
         name.text = intent.getStringExtra("name")
+
+        age_text = findViewById(R.id.age)
+        age = intent.getStringExtra("age")
+        age_text.text = age + "y"
+
+        birthStoneText = findViewById(R.id.birthstone)
+        birthstone = intent.getStringExtra("birthstone")
+        birthStoneText.text = "Birthstone: $birthstone"
+
         zodiac = intent.getStringExtra("Zodiac")
         zodiac_text = findViewById(R.id.textView)
         zodiac_text2 = findViewById(R.id.textView1)
@@ -96,8 +112,10 @@ class EndActivity : AppCompatActivity() {
         }
         zodiac_text2.animation = bottomanim
         zodiac_text.animation = bottomanim
+        birthStoneText.animation = bottomanim
         zodiac_sign.animation = topanim
         name.animation = topanim
+        age_text.animation = topanim
         back.animation = leftanim
     }
 }

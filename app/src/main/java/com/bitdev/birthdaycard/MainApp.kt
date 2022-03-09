@@ -9,10 +9,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.Button
-import android.widget.DatePicker
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
+import java.time.LocalDate
+import java.time.Period
 import java.util.*
 
 
@@ -51,13 +50,56 @@ class MainApp : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
         }
     }
 
+    fun getAge(year: Int, month: Int, dayOfMonth: Int): Int {
+        return Period.between(
+            LocalDate.of(year, month, dayOfMonth),
+            LocalDate.now()
+        ).years
+    }
+
+    fun getBirthstone(month: Int): String {
+        if (month == 1) {
+            return "Garnet"
+        } else if (month == 2) {
+            return "Amethyst"
+        } else if (month == 3) {
+            return "Aquamarine"
+        } else if (month == 4) {
+            return "Diamond"
+        } else if (month == 5) {
+            return "Emerald"
+        } else if (month == 6) {
+            return "Pearl"
+        } else if (month == 7) {
+            return "Ruby"
+        } else if (month == 8) {
+            return "Peridot"
+        } else if (month == 9) {
+            return "Sapphire"
+        } else if (month == 10) {
+            return "Opal"
+        } else if (month == 11) {
+            return "Topaz"
+        } else {
+            return "Turquoise"
+        }
+    }
+
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         if (name.text.toString() != "") {
             val my_zodiac = getZodiac(dayOfMonth, month)
-            intent = Intent(this@MainApp, EndActivity::class.java)
-            intent!!.putExtra("Zodiac", my_zodiac)
-            intent!!.putExtra("name", name.text.toString())
-            startActivity(intent)
+            val age = getAge(year, month, dayOfMonth)
+            val birthstone = getBirthstone(month)
+            if (age >= 0) {
+                intent = Intent(this@MainApp, EndActivity::class.java)
+                intent!!.putExtra("Zodiac", my_zodiac)
+                intent!!.putExtra("age", age.toString())
+                intent!!.putExtra("birthstone", birthstone)
+                intent!!.putExtra("name", name.text.toString())
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "You can't use future birt date!", Toast.LENGTH_LONG).show()
+            }
         } else {
             // Make Simple Dialog
             val alertDialog: AlertDialog? = this.let {
